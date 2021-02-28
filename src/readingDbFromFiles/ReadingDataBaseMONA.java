@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Set;
 import java.io.FileNotFoundException;
 
 import org.json.simple.JSONArray;
@@ -17,7 +18,10 @@ public class ReadingDataBaseMONA {
 	public static void main(String[] args) throws IOException, ParseException {
 		String path = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
 		JSONObject allSpecInfo = readingJSONMoNA(path);
-		allSpecInfo.get(0);
+		JSONObject tempObj = (JSONObject)allSpecInfo.get(0);
+//		Set tempSet = (Set) tempObj.entrySet();
+		System.out.println("\n\n");
+		System.out.print(tempObj.entrySet());
 		
 	}
 
@@ -33,7 +37,7 @@ public class ReadingDataBaseMONA {
 		JSONObject allSpectraInfo = new JSONObject();
 		for(int idx=0; idx<specArrays.size();++idx) {
 			
-				System.out.println("\n\n");
+				System.out.println();
 				System.out.println("reading spectrum: " + (idx+1) + "/" + specArrays.size());
 				
 				JSONObject singleSpectraInfo = new JSONObject();
@@ -58,8 +62,21 @@ public class ReadingDataBaseMONA {
 					continue;
 				}
 				singleSpectraInfo.put("inchikey",inchikey); //add inchikey
+				JSONArray nameArray = (JSONArray) comInfoObj.get("names"); //mona_raw[idx]['compound'][0].get('names')
+				if (nameArray.isEmpty()) {
+					singleSpectraInfo.put("name",null);
+					System.out.println("no names");
+				}
+				else {
+					JSONObject nameObj = (JSONObject) nameArray.get(0);
+					String name = (String) nameObj.get("name");
+					singleSpectraInfo.put("name",name);
+					System.out.println(name);
+				}
 				
-				System.out.println(inchikey);
+				
+//				System.out.println(inchikey);
+				
 				
 				int tempIndex = 0;
 				ArrayList<Double> specMz = new ArrayList<Double>();
@@ -105,13 +122,13 @@ public class ReadingDataBaseMONA {
 					if(name.equals("molecular formula")) {
 						String formula = (String) temp.get("value");
 						singleSpectraInfo.put("molecular formula",formula); //add to JSONObject
-						System.out.println("molecular formula: " + formula);
+//						System.out.println("molecular formula: " + formula);
 					}
 					else if(name.equals("total exact mass")) {
 						double totalExactMass = (double)temp.get("value");
 						singleSpectraInfo.put("totalExactMass", totalExactMass);
 						
-						System.out.println("total exact mass: " + totalExactMass);
+//						System.out.println("total exact mass: " + totalExactMass);
 					}
 		
 					
@@ -122,7 +139,7 @@ public class ReadingDataBaseMONA {
 					if(name.equals("ms level")) {
 						String msLevel = (String) temp.get("value");
 						singleSpectraInfo.put("msLevel", msLevel);
-						System.out.println("ms level: " + msLevel);
+//						System.out.println("ms level: " + msLevel);
 					}
 		//			else if(name.equals("collision energy")) {
 		//				String colliEnergy = (String) temp.get("value");
@@ -135,7 +152,7 @@ public class ReadingDataBaseMONA {
 					else if(name.equals("precursor type")) {
 						String preType = (String) temp.get("value");
 						singleSpectraInfo.put("precursorType", preType);
-						System.out.println("precursor type: " + preType);
+//						System.out.println("precursor type: " + preType);
 					}
 				}
 				

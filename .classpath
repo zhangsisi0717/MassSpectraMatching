@@ -6,6 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/jar/json-simple-2.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

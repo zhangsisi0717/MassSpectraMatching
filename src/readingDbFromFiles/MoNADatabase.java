@@ -7,4 +7,7 @@ public class MoNADatabase {
 
 	}
 	
+	String name = "Mona";
+	String negDirectory,posDirectory;
+	
 }
