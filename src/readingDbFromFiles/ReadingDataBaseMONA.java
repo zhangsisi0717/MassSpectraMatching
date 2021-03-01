@@ -105,7 +105,7 @@ public class ReadingDataBaseMONA {
 					continue;
 				}
 				singleSpectraInfo.put("mzs", specMz);
-				singleSpectraInfo.put("ints", specInts);
+				singleSpectraInfo.put("intensities", specInts);
 				
 		//		for(int i=0;i<specMz.size();++i) {
 		//			System.out.print("mz: "+ specMz.get(i));
@@ -121,7 +121,7 @@ public class ReadingDataBaseMONA {
 					String name = (String) temp.get("name");
 					if(name.equals("molecular formula")) {
 						String formula = (String) temp.get("value");
-						singleSpectraInfo.put("molecular formula",formula); //add to JSONObject
+						singleSpectraInfo.put("molecularFormula",formula); //add to JSONObject
 //						System.out.println("molecular formula: " + formula);
 					}
 					else if(name.equals("total exact mass")) {
