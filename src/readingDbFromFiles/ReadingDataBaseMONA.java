@@ -26,6 +26,20 @@ public class ReadingDataBaseMONA {
 		////		Set tempSet = (Set) tempObj.entrySet();
 		//		System.out.println("\n\n");
 		//		System.out.print(tempObj.entrySet());
+		ArrayList<MoNACompounds> monaCMPList = mona.getCompoundList();
+		for(int i=0; i<monaCMPList.size();++i) {
+			System.out.println("\n\n");
+			System.out.println("compound: " + i);
+		MoNACompounds tempMoNACMP = (MoNACompounds) monaCMPList.get(i);
+		ArrayList<MoNASpectrum> specList = (ArrayList<MoNASpectrum>) tempMoNACMP.getAllSpectra();
+			for(int j=0; j<specList.size();++j) {
+				System.out.println("\n\n");
+				System.out.println("Spectrum: " + j);
+				MoNASpectrum thisSpec = specList.get(j);
+				System.out.print(thisSpec.getSpectrumList());
+			 
+			}
+		}
 
 	}
 
@@ -149,7 +163,7 @@ public class ReadingDataBaseMONA {
 				if(name.equals("ms level")) {
 					String msLevel = (String) temp.get("value");
 					singleSpectraInfo.put("msLevel", msLevel);
-					//						System.out.println("ms level: " + msLevel);
+					System.out.println("ms level: " + msLevel);
 				}
 				//			else if(name.equals("collision energy")) {
 				//				String colliEnergy = (String) temp.get("value");
