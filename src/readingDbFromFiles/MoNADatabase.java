@@ -35,7 +35,6 @@ public class MoNADatabase {
 		this.negativeSpectra = new ArrayList<MoNASpectrum>();
 		this.cmpSpectra = new HashMap<String, ArrayList<MoNASpectrum>>();
 
-
 	}
 
 	private void addSpectra(String mode, MoNASpectrum spec) {

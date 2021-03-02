@@ -13,6 +13,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import matrixOperations.Matrix;
+
 public class ReadingDataBaseMONA {
 
 	public static void main(String[] args) throws IOException, ParseException {
@@ -20,27 +22,35 @@ public class ReadingDataBaseMONA {
 		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
 		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
 		mona.readFile("negative", negPath);
+		
+		ArrayList<ArrayList<Double>> speclist = mona.getNegativeSpectra().get(1000).getSpectrumList();
+		Matrix speclistMatrix = new Matrix(speclist);
+		System.out.println(speclistMatrix.getThisMatrix());
+		System.out.println(speclistMatrix.getMatrixShape());
+		
 //				JSONObject allSpecInfo = readingJSONMoNA(negPath);
 //				JSONObject tempObj = (JSONObject)allSpecInfo.get(0);
 //				System.out.println(tempObj.get("molecularFormula"));
 		////		Set tempSet = (Set) tempObj.entrySet();
 		//		System.out.println("\n\n");
 		//		System.out.print(tempObj.entrySet());
-		ArrayList<MoNACompounds> monaCMPList = mona.getCompoundList();
-		for(int i=0; i<monaCMPList.size();++i) {
-			System.out.println("\n\n");
-			System.out.println("compound: " + i);
-		MoNACompounds tempMoNACMP = (MoNACompounds) monaCMPList.get(i);
-		ArrayList<MoNASpectrum> specList = (ArrayList<MoNASpectrum>) tempMoNACMP.getAllSpectra();
-			for(int j=0; j<specList.size();++j) {
-				System.out.println("\n\n");
-				System.out.println("Spectrum: " + j);
-				MoNASpectrum thisSpec = specList.get(j);
-				System.out.print(thisSpec.getSpectrumList());
-			 
-			}
-		}
-
+		
+//		ArrayList<MoNACompounds> monaCMPList = mona.getCompoundList();  //reading and check if all the spectra are added
+//		for(int i=0; i<monaCMPList.size();++i) {
+//			System.out.println("\n\n");
+//			System.out.println("compound: " + i);
+//		MoNACompounds tempMoNACMP = (MoNACompounds) monaCMPList.get(i);
+//		ArrayList<MoNASpectrum> specList = (ArrayList<MoNASpectrum>) tempMoNACMP.getAllSpectra();
+//			for(int j=0; j<specList.size();++j) {
+//				System.out.println("\n\n");
+//				System.out.println("Spectrum: " + j);
+//				MoNASpectrum thisSpec = specList.get(j);
+//				System.out.print(thisSpec.getSpectrumList());
+//			 
+//			}
+//		}
+		
+		
 	}
 
 	public static JSONObject readingJSONMoNA(String path) throws IOException, ParseException{
