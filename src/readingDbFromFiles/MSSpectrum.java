@@ -5,21 +5,20 @@ import java.util.ArrayList;
 public class MSSpectrum {
 	
 	private String mode,msLevel,precursorType;
-	private ArrayList<Double> intensities;
-	private ArrayList<Double> mzs;
-	private ArrayList<ArrayList<Double>> spectrumList;
-	public MSSpectrum(String mode, String msLevel, String precursorType,ArrayList<Double> intensities, ArrayList<Double> mzs,ArrayList<ArrayList<Double>> spectrumList) {
-
+	private ArrayList<Number> intensities;
+	private ArrayList<Number> mzs;
+	private ArrayList<ArrayList<Number>> spectrumList;
+	public MSSpectrum(String mode, String msLevel, String precursorType,ArrayList<Number> intensities, ArrayList<Number> mzs,ArrayList<ArrayList<Number>> spectrumList) {
 		this.mode = mode;
 		this.msLevel = msLevel;
 		this.precursorType = precursorType;
 		this.intensities = intensities;
 		this.mzs = mzs;
-		this.spectrumList = new ArrayList<ArrayList<Double>>();
+		this.spectrumList = new ArrayList<ArrayList<Number>>();
 		if((! this.intensities.isEmpty()) && (! this.mzs.isEmpty())){
 			if(this.intensities.size() == this.mzs.size()) {
 			 for(int i=0;i <this.intensities.size();++i) {
-				 ArrayList<Double> temArray = new ArrayList<Double>();
+				 ArrayList<Number> temArray = new ArrayList<Number>();
 				 temArray.add(this.mzs.get(i));
 				 temArray.add(this.intensities.get(i));
 				 this.spectrumList.add(temArray);
@@ -36,6 +35,7 @@ public class MSSpectrum {
 		}
 
 	}
+	
 	public String getMode() {
 		return mode;
 	}
@@ -45,13 +45,13 @@ public class MSSpectrum {
 	public String getPrecursorType() {
 		return precursorType;
 	}
-	public ArrayList<Double> getIntensities() {
+	public ArrayList<Number> getIntensities() {
 		return intensities;
 	}
-	public ArrayList<Double> getMzs() {
+	public ArrayList<Number> getMzs() {
 		return mzs;
 	}
-	public ArrayList<ArrayList<Double>> getSpectrumList() {
+	public ArrayList<ArrayList<Number>> getSpectrumList() {
 		return spectrumList;
 	}
 	

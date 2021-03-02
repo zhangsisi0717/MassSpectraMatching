@@ -9,10 +9,10 @@ public class MoNASpectrum extends MSSpectrum {
 	//
 	//	}
 	private String name, SpectrumID,inchikey,molecularFormula;
-	double totalExactMass;
+	Number totalExactMass;
 
-	public MoNASpectrum(String name, String SpectrumID, String inchikey,String molecularFormula, double totalExactMass, String mode, String msLevel, String precursorType,ArrayList<Double> intensities, ArrayList<Double> mzs,ArrayList<ArrayList<Double>> spectrumList) {
-		super(mode, msLevel, precursorType, intensities, mzs,spectrumList);
+	public MoNASpectrum(String name, String SpectrumID, String inchikey,String molecularFormula, Number totalExactMass, String mode, String msLevel, String precursorType,ArrayList<Number> intensities, ArrayList<Number> mzs,ArrayList<ArrayList<Number>> spectrumList) {
+		super(mode,msLevel,precursorType, intensities, mzs,spectrumList);
 		this.name = name;
 		this.SpectrumID = SpectrumID;
 		this.inchikey = inchikey;
@@ -35,7 +35,7 @@ public class MoNASpectrum extends MSSpectrum {
 		return molecularFormula;
 	}
 
-	public double getTotalExactMass() {
+	public Number getTotalExactMass() {
 		return totalExactMass;
 	}
 

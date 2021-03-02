@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.io.FileNotFoundException;
 
@@ -23,10 +25,14 @@ public class ReadingDataBaseMONA {
 		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
 		mona.readFile("negative", negPath);
 		
-		ArrayList<ArrayList<Double>> speclist = mona.getNegativeSpectra().get(1000).getSpectrumList();
+		ArrayList<ArrayList<Number>> speclist = mona.getNegativeSpectra().get(1000).getSpectrumList();
+//		List<List<Double>> thisSpecList = speclist;
 		Matrix speclistMatrix = new Matrix(speclist);
 		System.out.println(speclistMatrix.getThisMatrix());
 		System.out.println(speclistMatrix.getMatrixShape());
+		
+
+
 		
 //				JSONObject allSpecInfo = readingJSONMoNA(negPath);
 //				JSONObject tempObj = (JSONObject)allSpecInfo.get(0);
@@ -107,8 +113,8 @@ public class ReadingDataBaseMONA {
 
 
 			int tempIndex = 0;
-			ArrayList<Double> specMz = new ArrayList<Double>();
-			ArrayList<Double> specInts = new ArrayList<Double>();
+			List<Number> specMz = new ArrayList<Number>();
+			List<Number> specInts = new ArrayList<Number>();
 
 			for(int jd=tempIndex+1; jd<specString.length();++jd) {        //parse the spectra string and convert into double
 				if(specString.charAt(jd) == ':') {

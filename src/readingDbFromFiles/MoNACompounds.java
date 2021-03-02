@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class MoNACompounds {
 	int cmpID;
 	String name,inchikey,molecularFormula;
-	double totalExactMass;
+	Number totalExactMass;
 //	ArrayList<MoNASpectrum> spectraMS1;
 //	ArrayList<MoNASpectrum> spectraMS2;
 	ArrayList<MoNASpectrum> allSpectra;
 	
-	public MoNACompounds(int cmpID, String name, String inchikey, String molecularFormula, double totalExactMass,ArrayList<MoNASpectrum> allSpectra) {
+	public MoNACompounds(int cmpID, String name, String inchikey, String molecularFormula, Number totalExactMass,ArrayList<MoNASpectrum> allSpectra) {
 		this.cmpID = cmpID;
 		this.name = name;
 		this.inchikey = inchikey;
@@ -38,7 +38,7 @@ public class MoNACompounds {
 		return molecularFormula;
 	}
 
-	public double getTotalExactMass() {
+	public Number getTotalExactMass() {
 		return totalExactMass;
 	}
 

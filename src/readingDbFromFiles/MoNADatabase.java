@@ -86,10 +86,10 @@ public class MoNADatabase {
 			String precursorType = (String) JsonSpec.get("precursorType");
 			System.out.println("precursorType: " + precursorType);
 
-			ArrayList<Double> intensities = (ArrayList<Double>) JsonSpec.get("intensities"); 
+			ArrayList<Number> intensities = (ArrayList<Number>) JsonSpec.get("intensities"); 
 
-			ArrayList<Double> mzs = (ArrayList<Double>) JsonSpec.get("mzs"); 
-			ArrayList<ArrayList<Double>> spectrumList = new ArrayList<ArrayList<Double>>();
+			ArrayList<Number> mzs = (ArrayList<Number>) JsonSpec.get("mzs"); 
+			ArrayList<ArrayList<Number>> spectrumList = new ArrayList<ArrayList<Number>>();
 
 
 			MoNASpectrum newSpec = new MoNASpectrum(name=name, SpectrumID=SpectrumID,inchikey=inchikey,molecularFormula=molecularFormula,totalExactMass=totalExactMass, 
@@ -115,7 +115,7 @@ public class MoNADatabase {
 			String thisinchi = (String) inchi;
 			String thisCmpName = cmpSpectra.get(thisinchi).get(0).getName();
 			String thisMolecularFormular = cmpSpectra.get(thisinchi).get(0).getMolecularFormula();
-			double thisTotalMass = cmpSpectra.get(thisinchi).get(0).getTotalExactMass();
+			Number thisTotalMass = cmpSpectra.get(thisinchi).get(0).getTotalExactMass();
 
 			ArrayList<MoNASpectrum> thisAllSpec = (ArrayList<MoNASpectrum>)cmpSpectra.get(thisinchi);
 
