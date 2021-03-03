@@ -52,8 +52,16 @@ public class ReadingDataBaseMONA {
 		Matrix speclistMatrix = new Matrix(all);
 //		System.out.println(speclistMatrix.matrixTranspose());
 		
-		Matrix newMatrix = speclistMatrix.selfmatrixMultiplication(false);
-		System.out.println(newMatrix.getThisMatrix());
+//		Matrix newMatrix = speclistMatrix.selfmatrixMultiplication(false);
+//		System.out.println(newMatrix.getThisMatrix());
+		System.out.println(speclistMatrix.sumMatrix(3).getThisMatrix());
+		System.out.println(speclistMatrix.multiplyMatrix(2).getThisMatrix());
+		System.out.println(speclistMatrix.divideMatrix(2, true).getThisMatrix());
+		System.out.println(speclistMatrix.matrixElementSum(speclistMatrix.sumMatrix(2)).getThisMatrix());
+		System.out.println(speclistMatrix.log10().getThisMatrix());
+		System.out.println(speclistMatrix.logE().getThisMatrix());
+		
+		
 
 		
 //				JSONObject allSpecInfo = readingJSONMoNA(negPath);

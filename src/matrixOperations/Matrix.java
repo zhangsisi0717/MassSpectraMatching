@@ -11,7 +11,6 @@ public class Matrix {
 	
 	private ArrayList<Integer> matrixShape = new ArrayList<Integer>();
 	private ArrayList<ArrayList<Number>> thisMatrix;
-	private ArrayList<Number> thisVector;
 	
 
 	public Matrix(ArrayList<ArrayList<Number>> Matrix) {
@@ -38,11 +37,45 @@ public class Matrix {
 	}
 
 	public ArrayList<ArrayList<Number>> getThisMatrix() {
+
 		return thisMatrix;
 	}
+	
 
 	
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((matrixShape == null) ? 0 : matrixShape.hashCode());
+		result = prime * result + ((thisMatrix == null) ? 0 : thisMatrix.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Matrix other = (Matrix) obj;
+		if (matrixShape == null) {
+			if (other.matrixShape != null)
+				return false;
+		} else if (!matrixShape.equals(other.matrixShape))
+			return false;
+		if (thisMatrix == null) {
+			if (other.thisMatrix != null)
+				return false;
+		} else if (!thisMatrix.equals(other.thisMatrix))
+			return false;
+		return true;
+	}
+
+
 	public static double vectorsInnerProduct(List<Number> vectorOne, List<Number> vectorTwo) {
 		if(vectorOne.size() != vectorTwo.size()) {
 			throw new java.lang.Error("length of two vectors must be equal!");
@@ -86,7 +119,19 @@ public class Matrix {
 		return new Matrix(newMatrix);
 	}
 	
-	public Matrix matrixSum(Matrix other) {
+	public Matrix selfmatrixMultiplication(boolean MMT) { //MMT true: Matrix.dot(Matrix.T); MMT false: Matrix.T.dot(Matrix)
+		Matrix selfT = new Matrix(this.matrixTranspose());
+		if(MMT == true) {
+			return this.matrixMultiplication(selfT);
+		}
+		else {
+			return selfT.matrixMultiplication(this);
+		}
+	
+	}
+
+	
+	public Matrix matrixElementSum(Matrix other) {
 		if(this.matrixShape.get(1) != other.matrixShape.get(1) || this.matrixShape.get(0) != other.matrixShape.get(0) ) {
 			throw new java.lang.Error("matrix shape doesnt match, number of rows and columns should be equal");
 		}
@@ -131,26 +176,24 @@ public class Matrix {
 	}
 
 	
-	public Matrix selfmatrixMultiplication(boolean MMT) { //MMT true: Matrix.dot(Matrix.T); MMT false: Matrix.T.dot(Matrix)
-		Matrix selfT = new Matrix(this.matrixTranspose());
-		if(MMT == true) {
-			return this.matrixMultiplication(selfT);
-		}
-		else {
-			return selfT.matrixMultiplication(this);
-		}
-	
-	}
-	public Matrix logMatrix(Number Coefficient, boolean log10) { //boolean log10: True, log10;  false: natural log
+	public Matrix log10() { 
 		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
 		for(int r=0;r<this.thisMatrix.size();++r) {
 			ArrayList<Number> newRow = new ArrayList<Number>();
 			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
-				if(log10 == true) {
-					newRow.add(Math.log10(this.thisMatrix.get(r).get(c).doubleValue()));}
-				else {
-					newRow.add(Math.log(this.thisMatrix.get(r).get(c).doubleValue()));	
-				}
+					newRow.add(Math.log10(this.thisMatrix.get(r).get(c).doubleValue()));
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);
+		}
+
+	public Matrix logE() { 
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+					newRow.add(Math.log(this.thisMatrix.get(r).get(c).doubleValue()));
 			}
 			newMatrix.add(newRow);
 		}
@@ -219,7 +262,6 @@ public class Matrix {
 		all.add(arrA2);
 		all.add(arrA3);
 		
-
 	}
 	
 	

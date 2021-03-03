@@ -22,6 +22,9 @@ public class MoNACompounds {
 	}
 	
 
+	
+	
+	
 	public int getCmpID() {
 		return cmpID;
 	}
