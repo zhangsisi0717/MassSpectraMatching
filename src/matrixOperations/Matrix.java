@@ -83,14 +83,123 @@ public class Matrix {
 			}
 			newMatrix.add(newRow);
 		}
-		Matrix returnMatrix = new Matrix(newMatrix);
-		return returnMatrix;
+		return new Matrix(newMatrix);
 	}
 	
-	public Matrix selfmatrixMultiplication() { //Matrix.dot(Matrix.T)
-		Matrix selfT = new Matrix(this.matrixTranspose());
-		return this.matrixMultiplication(selfT);
+	public Matrix matrixSum(Matrix other) {
+		if(this.matrixShape.get(1) != other.matrixShape.get(1) || this.matrixShape.get(0) != other.matrixShape.get(0) ) {
+			throw new java.lang.Error("matrix shape doesnt match, number of rows and columns should be equal");
+		}
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				newRow.add(other.thisMatrix.get(r).get(c).doubleValue() + this.thisMatrix.get(r).get(c).doubleValue());
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);}
+		
+	public Matrix matrixElementMultiply(Matrix other) { //element-wise summation of the two matrix
+		if(this.matrixShape.get(1) != other.matrixShape.get(1) || this.matrixShape.get(0) != other.matrixShape.get(0) ) {
+			throw new java.lang.Error("matrix shape doesnt match, number of rows and columns should be equal");
+		}
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				newRow.add(other.thisMatrix.get(r).get(c).doubleValue() * this.thisMatrix.get(r).get(c).doubleValue());
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);	
 	}
+	
+	public Matrix matrixElementSubtract(Matrix other) { //element-wise subtract of the two matrix. this.element-other.element
+		if(this.matrixShape.get(1) != other.matrixShape.get(1) || this.matrixShape.get(0) != other.matrixShape.get(0) ) {
+			throw new java.lang.Error("matrix shape doesnt match, number of rows and columns should be equal");
+		}
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				newRow.add(this.thisMatrix.get(r).get(c).doubleValue()-other.thisMatrix.get(r).get(c).doubleValue());
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);	
+	}
+
+	
+	public Matrix selfmatrixMultiplication(boolean MMT) { //MMT true: Matrix.dot(Matrix.T); MMT false: Matrix.T.dot(Matrix)
+		Matrix selfT = new Matrix(this.matrixTranspose());
+		if(MMT == true) {
+			return this.matrixMultiplication(selfT);
+		}
+		else {
+			return selfT.matrixMultiplication(this);
+		}
+	
+	}
+	public Matrix logMatrix(Number Coefficient, boolean log10) { //boolean log10: True, log10;  false: natural log
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				if(log10 == true) {
+					newRow.add(Math.log10(this.thisMatrix.get(r).get(c).doubleValue()));}
+				else {
+					newRow.add(Math.log(this.thisMatrix.get(r).get(c).doubleValue()));	
+				}
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);
+		}
+
+	
+	public Matrix multiplyMatrix(Number Coefficient) {
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				newRow.add(Coefficient.doubleValue() * (this.thisMatrix.get(r).get(c).doubleValue()));
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);
+		
+	}
+	public Matrix sumMatrix(Number Coefficient) {
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				newRow.add(Coefficient.doubleValue() + (this.thisMatrix.get(r).get(c).doubleValue()));
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);
+		
+	}
+	
+	public Matrix divideMatrix(Number Coefficient, boolean cdm) { //cdm:true-> coefficient/matrix, false: matrix/coefficient
+		if(cdm==true) {
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				newRow.add(Coefficient.doubleValue() / (this.thisMatrix.get(r).get(c).doubleValue()));
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);
+		}
+		else {
+			return multiplyMatrix(1/Coefficient.doubleValue());
+		}
+		
+	}	
 	
 	public static void main(String[] args) {
 		ArrayList<ArrayList<Number>> all = new ArrayList<ArrayList<Number>>();

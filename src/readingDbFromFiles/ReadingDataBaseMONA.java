@@ -52,7 +52,7 @@ public class ReadingDataBaseMONA {
 		Matrix speclistMatrix = new Matrix(all);
 //		System.out.println(speclistMatrix.matrixTranspose());
 		
-		Matrix newMatrix = speclistMatrix.selfmatrixMultiplication();
+		Matrix newMatrix = speclistMatrix.selfmatrixMultiplication(false);
 		System.out.println(newMatrix.getThisMatrix());
 
 		
