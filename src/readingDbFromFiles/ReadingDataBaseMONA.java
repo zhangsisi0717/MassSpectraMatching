@@ -20,18 +20,40 @@ import matrixOperations.Matrix;
 public class ReadingDataBaseMONA {
 
 	public static void main(String[] args) throws IOException, ParseException {
-		String negPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
-		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
-		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
-		mona.readFile("negative", negPath);
+//		String negPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
+//		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
+//		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
+//		mona.readFile("negative", negPath);
 		
-		ArrayList<ArrayList<Number>> speclist = mona.getNegativeSpectra().get(1000).getSpectrumList();
+//		ArrayList<ArrayList<Number>> speclist = mona.getNegativeSpectra().get(1000).getSpectrumList();
 //		List<List<Double>> thisSpecList = speclist;
-		Matrix speclistMatrix = new Matrix(speclist);
-		System.out.println(speclistMatrix.getThisMatrix());
-		System.out.println(speclistMatrix.getMatrixShape());
+//		Matrix speclistMatrix = new Matrix(speclist);
+//		System.out.println(speclistMatrix.getThisMatrix());
+//		System.out.println(speclistMatrix.getMatrixShape());
 		
-
+		
+		ArrayList<ArrayList<Number>> all = new ArrayList<ArrayList<Number>>();
+		Number[] a1 = {1.1,1.2,1.3,1.4};
+		Number[] a2 = {2.0,3.0,4.0,5};
+		Number[] a3 = {1,1,1,1};
+		
+		ArrayList<Number> arrA1 = new ArrayList<Number>();
+		ArrayList<Number> arrA2 = new ArrayList<Number>();
+		ArrayList<Number> arrA3 = new ArrayList<Number>();
+		
+		Collections.addAll(arrA1, a1);
+		Collections.addAll(arrA2, a2);
+		Collections.addAll(arrA3, a3);
+		
+		all.add(arrA1);
+		all.add(arrA2);
+		all.add(arrA3);
+		
+		Matrix speclistMatrix = new Matrix(all);
+//		System.out.println(speclistMatrix.matrixTranspose());
+		
+		Matrix newMatrix = speclistMatrix.selfmatrixMultiplication();
+		System.out.println(newMatrix.getThisMatrix());
 
 		
 //				JSONObject allSpecInfo = readingJSONMoNA(negPath);

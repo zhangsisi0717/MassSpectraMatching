@@ -4,12 +4,14 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class Matrix {
 	
 	private ArrayList<Integer> matrixShape = new ArrayList<Integer>();
 	private ArrayList<ArrayList<Number>> thisMatrix;
+	private ArrayList<Number> thisVector;
 	
 
 	public Matrix(ArrayList<ArrayList<Number>> Matrix) {
@@ -27,8 +29,9 @@ public class Matrix {
 		this.thisMatrix = Matrix;
 		this.matrixShape.add(this.thisMatrix.size());
 		this.matrixShape.add(this.thisMatrix.get(0).size());
+//		this.thisVector = new ArrayList<Number>();
 	}
-
+	
 
 	public ArrayList<Integer> getMatrixShape() {
 		return matrixShape;
@@ -58,28 +61,56 @@ public class Matrix {
 			for(int r=0; r<this.getMatrixShape().get(0);++r) {
 				newRow.add(this.getThisMatrix().get(r).get(c));
 			}
+			matrixT.add(newRow);
 		}
 		return matrixT;
 	}
+	
+	public Matrix matrixMultiplication(Matrix other){
+		if(this.matrixShape.get(1) != other.matrixShape.get(0)) {
+			throw new java.lang.Error("matrix shape doesnt match, this.matrixshape.get(1) != other.matrixshape.get(0)!");
+		}
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int thisr=0;thisr<this.matrixShape.get(0);++thisr) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int otherc=0; otherc<other.matrixShape.get(1);++otherc) {
+				ArrayList<Number> otherColVec = new ArrayList<Number>();
+				for(int otherr=0; otherr<other.matrixShape.get(0);++otherr) {
+					otherColVec.add(other.thisMatrix.get(otherr).get(otherc));
+				}
+				double thisRe = this.vectorsInnerProduct(this.thisMatrix.get(thisr), otherColVec);
+				newRow.add(thisRe);
+			}
+			newMatrix.add(newRow);
+		}
+		Matrix returnMatrix = new Matrix(newMatrix);
+		return returnMatrix;
+	}
+	
+	public Matrix selfmatrixMultiplication() { //Matrix.dot(Matrix.T)
+		Matrix selfT = new Matrix(this.matrixTranspose());
+		return this.matrixMultiplication(selfT);
+	}
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-//		Number[] arrayvec =  {1.0,0,2.0};
-//		Number[] arrayvec2 =  {1.0,0.0,3};
-//		List<Number> listvec = Arrays.asList(arrayvec);
-//		List<Number> listvec2 = Arrays.asList(arrayvec2);
-		Number[] a1 = {1.1,1.2,1.3};
-		Number[] a2 = {2.0,3.0,4.0};
-//		List<Double> arraylis1 = Arrays.asList(a1);
-//		List<Double> arraylis2 = Arrays.asList(a2);
+		ArrayList<ArrayList<Number>> all = new ArrayList<ArrayList<Number>>();
+		Number[] a1 = {1.1,1.2,1.3,1.4};
+		Number[] a2 = {2.0,3.0,4.0,5};
+		Number[] a3 = {1,1,1,1};
 		
-		ArrayList<Number> list1 = new ArrayList<Number>();
-		ArrayList<Number> list2 = new ArrayList<Number>();
-		Collections.addAll(list1, a1);
-		Collections.addAll(list2, a2);
-		list1.addAll(list2);
+		ArrayList<Number> arrA1 = new ArrayList<Number>();
+		ArrayList<Number> arrA2 = new ArrayList<Number>();
+		ArrayList<Number> arrA3 = new ArrayList<Number>();
 		
-		double re = Matrix.vectorsInnerProduct(list1,list2);
-		System.out.println(re);
+		Collections.addAll(arrA1, a1);
+		Collections.addAll(arrA2, a2);
+		Collections.addAll(arrA3, a3);
+		
+		all.add(arrA1);
+		all.add(arrA2);
+		all.add(arrA3);
+		
+
 	}
 	
 	
