@@ -244,6 +244,21 @@ public class Matrix {
 		
 	}	
 	
+	public Matrix VecorSubtractOuter(ArrayList<Number> a, ArrayList<Number> b){
+		ArrayList<ArrayList<Number>> newMax = new ArrayList<ArrayList<Number>>();
+		for(int i=0; i<a.size();++i) {
+			ArrayList<Number> newR = new ArrayList<Number>();
+			for(int j=0;j<b.size();++j) {
+				newR.add(a.get(i).doubleValue() - b.get(j).doubleValue());
+			}
+			newMax.add(newR);
+		}
+	
+		return new Matrix(newMax);
+	
+	}
+	
+	
 	public static void main(String[] args) {
 		ArrayList<ArrayList<Number>> all = new ArrayList<ArrayList<Number>>();
 		Number[] a1 = {1.1,1.2,1.3,1.4};

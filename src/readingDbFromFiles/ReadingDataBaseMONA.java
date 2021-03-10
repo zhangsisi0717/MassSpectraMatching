@@ -32,35 +32,35 @@ public class ReadingDataBaseMONA {
 //		System.out.println(speclistMatrix.getMatrixShape());
 		
 		
-		ArrayList<ArrayList<Number>> all = new ArrayList<ArrayList<Number>>();
-		Number[] a1 = {1.1,1.2,1.3,1.4};
-		Number[] a2 = {2.0,3.0,4.0,5};
-		Number[] a3 = {1,1,1,1};
-		
-		ArrayList<Number> arrA1 = new ArrayList<Number>();
-		ArrayList<Number> arrA2 = new ArrayList<Number>();
-		ArrayList<Number> arrA3 = new ArrayList<Number>();
-		
-		Collections.addAll(arrA1, a1);
-		Collections.addAll(arrA2, a2);
-		Collections.addAll(arrA3, a3);
-		
-		all.add(arrA1);
-		all.add(arrA2);
-		all.add(arrA3);
-		
-		Matrix speclistMatrix = new Matrix(all);
+//		ArrayList<ArrayList<Double>> all = new ArrayList<ArrayList<Double>>();
+//		Double[] a1 = {1.1,1.2,1.3,1.4};
+//		Double[] a2 = {2.0,3.0,4.0,5.};
+//		Double[] a3 = {1.,1.,1.,1.};
+//		
+//		ArrayList<Double> arrA1 = new ArrayList<Double>();
+//		ArrayList<Double> arrA2 = new ArrayList<Double>();
+//		ArrayList<Double> arrA3 = new ArrayList<Double>();
+//		
+//		Collections.addAll(arrA1, a1);
+//		Collections.addAll(arrA2, a2);
+//		Collections.addAll(arrA3, a3);
+//		
+//		all.add(arrA1);
+//		all.add(arrA2);
+//		all.add(arrA3);
+//		
+//		Matrix speclistMatrix = new Matrix(all);
 //		System.out.println(speclistMatrix.matrixTranspose());
 		
 //		Matrix newMatrix = speclistMatrix.selfmatrixMultiplication(false);
 //		System.out.println(newMatrix.getThisMatrix());
-		System.out.println(speclistMatrix.sumMatrix(3).getThisMatrix());
-		System.out.println(speclistMatrix.multiplyMatrix(2).getThisMatrix());
-		System.out.println(speclistMatrix.divideMatrix(2, true).getThisMatrix());
-		System.out.println(speclistMatrix.matrixElementSum(speclistMatrix.sumMatrix(2)).getThisMatrix());
-		System.out.println(speclistMatrix.log10().getThisMatrix());
-		System.out.println(speclistMatrix.logE().getThisMatrix());
-		
+//		System.out.println(speclistMatrix.sumMatrix(3).getThisMatrix());
+//		System.out.println(speclistMatrix.multiplyMatrix(2).getThisMatrix());
+//		System.out.println(speclistMatrix.divideMatrix(2, true).getThisMatrix());
+//		System.out.println(speclistMatrix.matrixElementSum(speclistMatrix.sumMatrix(2)).getThisMatrix());
+//		System.out.println(speclistMatrix.log10().getThisMatrix());
+//		System.out.println(speclistMatrix.logE().getThisMatrix());
+//		
 		
 
 		
