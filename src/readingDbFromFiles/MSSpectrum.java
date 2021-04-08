@@ -2,6 +2,9 @@ package readingDbFromFiles;
 
 import java.util.ArrayList;
 
+import matrixOperations.Matrix;
+
+
 public class MSSpectrum {
 	
 	protected String mode,msLevel,precursorType;
@@ -36,6 +39,13 @@ public class MSSpectrum {
 
 	}
 	
+	
+	@Override
+	public String toString() {
+		return "MSSpectrum [mode=" + mode + ", msLevel=" + msLevel + ", spectrumList=" + spectrumList + "]";
+	}
+
+
 	public String getMode() {
 		return mode;
 	}
@@ -110,7 +120,30 @@ public class MSSpectrum {
 		return true;
 	}
 	
+	public double gaussianInnerProduct(MSSpectrum other, double ppm) {
+		ArrayList<Number> mza_log = Matrix.vectorlog10(this.mzs);
+		ArrayList<Number> mzb_log = Matrix.vectorlog10(other.getMzs());
+		double sigma  = 2*Math.log10(1+ ppm * Math.pow(1, -6));
+		Matrix diff = Matrix.VecorSubtractOuter(mza_log, mzb_log);
+		diff = diff.divideMatrix(sigma,true).powerMatrix(2).multiplyMatrix(-1).logE();
+		ArrayList<ArrayList<Number>> a = new ArrayList<ArrayList<Number>>();
+		ArrayList<ArrayList<Number>> b = new ArrayList<ArrayList<Number>>();
+		a.add(this.intensities);
+		b.add(other.getIntensities());
+		Matrix inta = new Matrix(a);
+		Matrix intb = new Matrix(b);
+		Matrix result = diff.matrixMultiplication(intb);
+		result = inta.matrixMultiplication(result);
+		return result.getThisMatrix().get(0).get(0).doubleValue();
+		
+	}
 	
+	public double cosineSimilarityScore(MSSpectrum other, double ppm) {
+		double innerProduct = gaussianInnerProduct(other, ppm);
+		double selfInner = gaussianInnerProduct(this, ppm);
+		double otherInner = other.gaussianInnerProduct(other, ppm);
+		return innerProduct/Math.sqrt(selfInner*otherInner);
+	}
 	
 	
 

@@ -187,6 +187,14 @@ public class Matrix {
 		}
 		return new Matrix(newMatrix);
 		}
+	
+	public static ArrayList<Number> vectorlog10(ArrayList<Number> vector) { 
+		ArrayList<Number> newVec= new ArrayList<Number>();
+		for(Number i: vector) {
+			newVec.add(Math.log10(i.doubleValue()));
+			}	
+		return newVec;
+	}
 
 	public Matrix logE() { 
 		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
@@ -199,7 +207,14 @@ public class Matrix {
 		}
 		return new Matrix(newMatrix);
 		}
-
+	
+	public static ArrayList<Number> vectorlogE(ArrayList<Number> vector) { 
+		ArrayList<Number> newVec= new ArrayList<Number>();
+		for(Number i: vector) {
+			newVec.add(Math.log(i.doubleValue()));
+			}	
+		return newVec;
+	}
 	
 	public Matrix multiplyMatrix(Number Coefficient) {
 		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
@@ -207,6 +222,19 @@ public class Matrix {
 			ArrayList<Number> newRow = new ArrayList<Number>();
 			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
 				newRow.add(Coefficient.doubleValue() * (this.thisMatrix.get(r).get(c).doubleValue()));
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);
+		
+	}
+	
+	public Matrix powerMatrix(Number power) { //element-wise power of the matrix
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+				newRow.add(Math.pow(this.thisMatrix.get(r).get(c).doubleValue(),power.doubleValue()));
 			}
 			newMatrix.add(newRow);
 		}
@@ -226,7 +254,9 @@ public class Matrix {
 		
 	}
 	
-	public Matrix divideMatrix(Number Coefficient, boolean cdm) { //cdm:true-> coefficient/matrix, false: matrix/coefficient
+	public Matrix divideMatrix(Number Coefficient, boolean cdm) { 
+		
+//		cdm:true-> coefficient/matrix, false: matrix/coefficient
 		if(cdm==true) {
 		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
 		for(int r=0;r<this.thisMatrix.size();++r) {
@@ -244,7 +274,7 @@ public class Matrix {
 		
 	}	
 	
-	public Matrix VecorSubtractOuter(ArrayList<Number> a, ArrayList<Number> b){
+	public static Matrix VecorSubtractOuter(ArrayList<Number> a, ArrayList<Number> b){
 		ArrayList<ArrayList<Number>> newMax = new ArrayList<ArrayList<Number>>();
 		for(int i=0; i<a.size();++i) {
 			ArrayList<Number> newR = new ArrayList<Number>();

@@ -127,21 +127,33 @@ public class MoNADatabase {
 		this.numCompound = compoundID;
 	}
 
+	
+	
+	@Override
+	public String toString() {
+		return "MoNADatabase [name=" + name + ", numCompound=" + numCompound + "]";
+	}
+	
+
 	public String getName() {
 		return name;
 	}
+	
 
 	public String getNegDirectory() {
 		return negDirectory;
 	}
+	
 
 	public String getPosDirectory() {
 		return posDirectory;
 	}
+	
 
 	public int getNumCompound() {
 		return numCompound;
 	}
+	
 
 	public ArrayList<MoNACompounds> getCompoundList() {
 		return compoundList;

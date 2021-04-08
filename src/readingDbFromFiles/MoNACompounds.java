@@ -25,6 +25,13 @@ public class MoNACompounds {
 	
 	
 	
+	@Override
+	public String toString() {
+		return "MoNACompounds [name=" + name + ", molecularFormula=" + molecularFormula + ", totalExactMass="
+				+ totalExactMass + "]";
+	}
+
+
 	public int getCmpID() {
 		return cmpID;
 	}

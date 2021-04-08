@@ -18,6 +18,15 @@ public class MoNASpectrum extends MSSpectrum {
 		this.inchikey = inchikey;
 		this.molecularFormula = molecularFormula;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "MoNASpectrum [name=" + name + ", mode=" + mode + ", spectrumList=" + spectrumList + "]";
+	}
+
+
 
 	public String getName() {
 		return name;
