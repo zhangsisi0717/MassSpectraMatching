@@ -10,11 +10,6 @@ import org.json.simple.parser.ParseException;
 
 public class MoNADatabase {
 
-	//	public static void main(String[] args) {
-	//		// TODO Auto-generated method stub
-	//		
-	//	}
-
 	private String name = "Mona";
 	private String negDirectory,posDirectory;
 	private int numCompound;
@@ -59,32 +54,32 @@ public class MoNADatabase {
 		int readingIdx = 0;
 		for(Object key: allSpecInfo.keySet()) {  //iterate through returned allSpecInfo: key:1,2,3... value:mzs,ints,name...
 			readingIdx +=1;
-			System.out.println("\n\n");
-			System.out.println("Reading index: " + readingIdx);
+//			System.out.println("\n\n");
+//			System.out.println("Reading index: " + readingIdx);
 			JSONObject JsonSpec = (JSONObject) allSpecInfo.get(key);
 			String name = (String)JsonSpec.get("name");
-			System.out.println("name: " + name);
+//			System.out.println("name: " + name);
 
 			String SpectrumID = (String)JsonSpec.get("SpectrumID");
-			System.out.println("SpectrumID: " + SpectrumID);
+//			System.out.println("SpectrumID: " + SpectrumID);
 
 			String inchikey = (String)JsonSpec.get("inchikey");
-			System.out.println("inchikey: " + inchikey);
+//			System.out.println("inchikey: " + inchikey);
 
 			String molecularFormula = (String) JsonSpec.get("molecularFormula");
-			System.out.println("molecularFormula: " + molecularFormula);
+//			System.out.println("molecularFormula: " + molecularFormula);
 
 			double totalExactMass = (double)JsonSpec.get("totalExactMass");
-			System.out.println("totalExactMass: " + totalExactMass);
+//			System.out.println("totalExactMass: " + totalExactMass);
 
 
 
 			//				String thisMode = (String)JsonSpec.get("mode");
 			String msLevel = (String) JsonSpec.get("msLevel");
-			System.out.println("msLevel: " + msLevel);
+//			System.out.println("msLevel: " + msLevel);
 
 			String precursorType = (String) JsonSpec.get("precursorType");
-			System.out.println("precursorType: " + precursorType);
+//			System.out.println("precursorType: " + precursorType);
 
 			ArrayList<Number> intensities = (ArrayList<Number>) JsonSpec.get("intensities"); 
 
@@ -158,14 +153,17 @@ public class MoNADatabase {
 	public ArrayList<MoNACompounds> getCompoundList() {
 		return compoundList;
 	}
+	
 
 	public HashMap<String, MoNACompounds> getCompoundMap() {
 		return compoundMap;
 	}
+	
 
 	public ArrayList<MoNASpectrum> getPositiveSpectra() {
 		return positiveSpectra;
 	}
+	
 
 	public ArrayList<MoNASpectrum> getNegativeSpectra() {
 		return negativeSpectra;

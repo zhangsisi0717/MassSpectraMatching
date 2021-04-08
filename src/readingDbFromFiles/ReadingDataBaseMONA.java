@@ -20,72 +20,11 @@ import matrixOperations.Matrix;
 public class ReadingDataBaseMONA {
 
 	public static void main(String[] args) throws IOException, ParseException {
-//		String negPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
-//		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
-//		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
-//		mona.readFile("negative", negPath);
 		
-//		ArrayList<ArrayList<Number>> speclist = mona.getNegativeSpectra().get(1000).getSpectrumList();
-//		List<List<Double>> thisSpecList = speclist;
-//		Matrix speclistMatrix = new Matrix(speclist);
-//		System.out.println(speclistMatrix.getThisMatrix());
-//		System.out.println(speclistMatrix.getMatrixShape());
-		
-		
-//		ArrayList<ArrayList<Double>> all = new ArrayList<ArrayList<Double>>();
-//		Double[] a1 = {1.1,1.2,1.3,1.4};
-//		Double[] a2 = {2.0,3.0,4.0,5.};
-//		Double[] a3 = {1.,1.,1.,1.};
-//		
-//		ArrayList<Double> arrA1 = new ArrayList<Double>();
-//		ArrayList<Double> arrA2 = new ArrayList<Double>();
-//		ArrayList<Double> arrA3 = new ArrayList<Double>();
-//		
-//		Collections.addAll(arrA1, a1);
-//		Collections.addAll(arrA2, a2);
-//		Collections.addAll(arrA3, a3);
-//		
-//		all.add(arrA1);
-//		all.add(arrA2);
-//		all.add(arrA3);
-//		
-//		Matrix speclistMatrix = new Matrix(all);
-//		System.out.println(speclistMatrix.matrixTranspose());
-		
-//		Matrix newMatrix = speclistMatrix.selfmatrixMultiplication(false);
-//		System.out.println(newMatrix.getThisMatrix());
-//		System.out.println(speclistMatrix.sumMatrix(3).getThisMatrix());
-//		System.out.println(speclistMatrix.multiplyMatrix(2).getThisMatrix());
-//		System.out.println(speclistMatrix.divideMatrix(2, true).getThisMatrix());
-//		System.out.println(speclistMatrix.matrixElementSum(speclistMatrix.sumMatrix(2)).getThisMatrix());
-//		System.out.println(speclistMatrix.log10().getThisMatrix());
-//		System.out.println(speclistMatrix.logE().getThisMatrix());
-//		
-		
-
-		
-//				JSONObject allSpecInfo = readingJSONMoNA(negPath);
-//				JSONObject tempObj = (JSONObject)allSpecInfo.get(0);
-//				System.out.println(tempObj.get("molecularFormula"));
-		////		Set tempSet = (Set) tempObj.entrySet();
-		//		System.out.println("\n\n");
-		//		System.out.print(tempObj.entrySet());
-		
-//		ArrayList<MoNACompounds> monaCMPList = mona.getCompoundList();  //reading and check if all the spectra are added
-//		for(int i=0; i<monaCMPList.size();++i) {
-//			System.out.println("\n\n");
-//			System.out.println("compound: " + i);
-//		MoNACompounds tempMoNACMP = (MoNACompounds) monaCMPList.get(i);
-//		ArrayList<MoNASpectrum> specList = (ArrayList<MoNASpectrum>) tempMoNACMP.getAllSpectra();
-//			for(int j=0; j<specList.size();++j) {
-//				System.out.println("\n\n");
-//				System.out.println("Spectrum: " + j);
-//				MoNASpectrum thisSpec = specList.get(j);
-//				System.out.print(thisSpec.getSpectrumList());
-//			 
-//			}
-//		}
-		
+		String negPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
+		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
+		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
+		mona.readFile("negative", negPath);
 		
 	}
 
@@ -100,9 +39,9 @@ public class ReadingDataBaseMONA {
 
 		JSONObject allSpectraInfo = new JSONObject();
 		for(int idx=0; idx<specArrays.size();++idx) {
-
-			System.out.println();
-			System.out.println("reading spectrum: " + (idx+1) + "/" + specArrays.size());
+			
+			if (idx%1000==0 || idx == specArrays.size()-1) {
+			System.out.println("reading spectrum: " + (idx+1) + "/" + specArrays.size());}
 
 			JSONObject singleSpectraInfo = new JSONObject();
 
@@ -116,7 +55,7 @@ public class ReadingDataBaseMONA {
 			if(specString == null) {
 				continue;
 			}
-			//				System.out.println(specString);
+		
 			JSONArray metaData1 = (JSONArray) specInfo.get("metaData"); //metaData1 = mona[idx].get("metaData")  (Array)
 			JSONArray comInfoArray = (JSONArray)specInfo.get("compound");  //comInfoArray = mona[idx].get('compound') (Array)
 
@@ -129,18 +68,13 @@ public class ReadingDataBaseMONA {
 			JSONArray nameArray = (JSONArray) comInfoObj.get("names"); //nameArray = mona_raw[idx]['compound'][0].get('names')
 			if (nameArray.isEmpty()) {
 				singleSpectraInfo.put("name","null");
-//				System.out.println("no names");
+
 			}
 			else {
 				JSONObject nameObj = (JSONObject) nameArray.get(0);
 				String name = (String) nameObj.get("name");
 				singleSpectraInfo.put("name",name);
-				System.out.println(name);
 			}
-
-
-			//				System.out.println(inchikey);
-
 
 			int tempIndex = 0;
 			List<Number> specMz = new ArrayList<Number>();
@@ -149,14 +83,13 @@ public class ReadingDataBaseMONA {
 			for(int jd=tempIndex+1; jd<specString.length();++jd) {        //parse the spectra string and convert into double
 				if(specString.charAt(jd) == ':') {
 					Double mz = Double.parseDouble(specString.substring(tempIndex, jd));
-					//				System.out.println(mz);
+			
 					specMz.add(mz);
 					tempIndex = jd +1;
 				}
 				else if(specString.charAt(jd) == ' ') {
 					Double intensity = Double.parseDouble(specString.substring(tempIndex, jd));
 					specInts.add(intensity);
-					//				System.out.print(intensity);
 					tempIndex = jd +1;	
 				}
 				else if(jd == specString.length()-1) {
@@ -165,19 +98,12 @@ public class ReadingDataBaseMONA {
 				}
 			}
 			if(specMz.size()>100) {
-				System.out.printf("spectrum %d has mzs larger than 100!",idx);
 				continue;
 			}
 			singleSpectraInfo.put("mzs", specMz);
 			singleSpectraInfo.put("intensities", specInts);
 
-			//		for(int i=0;i<specMz.size();++i) {
-			//			System.out.print("mz: "+ specMz.get(i));
-			//			System.out.print("  intensity: "+ specInts.get(i));
-			//			System.out.println();
-			//		}
-
-
+	
 			JSONArray metaData2 = (JSONArray)comInfoObj.get("metaData"); //metaData2 = mona_raw[idx]['compound'].get(0).get('metaData')
 
 			for(int j=0;j<metaData2.size();++j) { //iterate in metaData2
@@ -186,13 +112,13 @@ public class ReadingDataBaseMONA {
 				if(name.equals("molecular formula")) {
 					String formula = (String) temp.get("value");
 					singleSpectraInfo.put("molecularFormula",formula); //add to JSONObject
-					//						System.out.println("molecular formula: " + formula);
+				
 				}
 				else if(name.equals("total exact mass")) {
 					double totalExactMass = (double)temp.get("value");
 					singleSpectraInfo.put("totalExactMass", totalExactMass);
 
-					//						System.out.println("total exact mass: " + totalExactMass);
+					
 				}
 
 			}
@@ -209,20 +135,12 @@ public class ReadingDataBaseMONA {
 				if(name.equals("ms level")) {
 					String msLevel = (String) temp.get("value");
 					singleSpectraInfo.put("msLevel", msLevel);
-					System.out.println("ms level: " + msLevel);
+					
 				}
-				//			else if(name.equals("collision energy")) {
-				//				String colliEnergy = (String) temp.get("value");
-				//				System.out.println("collision energy: " + colliEnergy);
-				//			}
-				//			else if(name.equals("precursor m/z")) {
-				//				double preMZ = (double)temp.get("value");
-				//				System.out.println("precursor m/z: " + preMZ);
-				//			}
 				else if(name.equals("precursor type")) {
 					String preType = (String) temp.get("value");
 					singleSpectraInfo.put("precursorType", preType);
-					//						System.out.println("precursor type: " + preType);
+					
 				}
 			}
 			if(singleSpectraInfo.get("msLevel")==null) {
