@@ -139,32 +139,17 @@ public class MSSpectrum {
 	public double gaussianInnerProduct(MSSpectrum other, double ppm) {
 		ArrayList<Number> mza_log = Matrix.vectorlog10(this.mzs);
 		ArrayList<Number> mzb_log = Matrix.vectorlog10(other.getMzs());
-//		System.out.println("mza_log = " + mza_log);
-//		System.out.println("mza_log.shape = " + mza_log.size());
-//		System.out.println("mzb_log = " + mzb_log);
-//		System.out.println("mzb_log.shape = " + mzb_log.size());
 		double sigma  = 2*Math.log10(1+ ppm * Math.pow(1, -6));
-//		System.out.println("sigma = " + sigma);
 		Matrix diff = Matrix.VecorSubtractOuter(mza_log, mzb_log);
-//		System.out.println("ab.SubtractOuter1 = " + diff.getMatrixShape());
-//		System.out.println("ab.SubtractOuter1 = " + diff);
 		diff = diff.divideMatrix(sigma,false).powerMatrix(2).multiplyMatrix(-1).exp();
-//		System.out.println("ab.SubtractOuter2 = " + diff.getMatrixShape());
-//		System.out.println("ab.SubtractOuter2 = " + diff);
 		ArrayList<ArrayList<Number>> a = new ArrayList<ArrayList<Number>>();
 		ArrayList<ArrayList<Number>> b = new ArrayList<ArrayList<Number>>();
 		a.add(this.intensities);
 		b.add(other.getIntensities());
 		Matrix inta = new Matrix(a);
 		Matrix intb = new Matrix(b);
-//		System.out.println("inta.shape = " + inta.getMatrixShape());
-//		System.out.println("inta = " + inta);
-//		System.out.println("intb.shape = " + intb.getMatrixShape());
-//		System.out.println("intb = " + intb);
 		Matrix result = diff.matrixMultiplication(intb.matrixTranspose());
-//		System.out.println("result1 = " + result);
 		result = inta.matrixMultiplication(result);
-//		System.out.println("result2 = " + result);
 		return result.getThisMatrix().get(0).get(0).doubleValue();
 		
 	}
@@ -188,7 +173,7 @@ public class MSSpectrum {
 			}
 		}
 		for(int i=0; i<candidates.size(); ++i) {
-			System.out.println("Matching compounds: " + i + "/" + candidates.size());
+			System.out.print("\r"+"Matching compounds: " + i+1 + "/" + candidates.size()+"           ");
 			CompoundMatchingResults result = findBestMatchedSpectrum(candidates.get(i));
 			if(result.getBestMatchedScore().doubleValue()>=scoreThreshold) {
 				candidatesFiltered.add(result);
@@ -225,8 +210,6 @@ public class MSSpectrum {
 		int i=0;
 		int j=0;
 		while(i<left.size() || j<right.size()) {
-//			System.out.println("i=" +i);
-//			System.out.println("j=" +j);
 			if(i>= left.size()) {
 				ArrayList<CompoundMatchingResults> newList = new ArrayList(right.subList(j, right.size()));
 				newResult.addAll(newList);
