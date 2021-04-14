@@ -36,13 +36,21 @@ public class Matrix {
 		return matrixShape;
 	}
 
+	
 	public ArrayList<ArrayList<Number>> getThisMatrix() {
 
 		return thisMatrix;
 	}
 	
-
 	
+	
+	@Override
+	public String toString() {
+		return "Matrix [matrixShape=" + matrixShape + ", thisMatrix=" + thisMatrix + "]";
+	}
+	
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,7 +95,7 @@ public class Matrix {
 		return innerProduct;
 	}
 	
-	public ArrayList<ArrayList<Number>> matrixTranspose(){
+	public Matrix matrixTranspose(){
 		ArrayList<ArrayList<Number>> matrixT = new ArrayList<ArrayList<Number>>();
 		for(int c=0; c<this.getMatrixShape().get(1);++c) {
 			ArrayList<Number> newRow = new ArrayList<Number>(); 
@@ -96,7 +104,8 @@ public class Matrix {
 			}
 			matrixT.add(newRow);
 		}
-		return matrixT;
+		
+		return new Matrix(matrixT);
 	}
 	
 	public Matrix matrixMultiplication(Matrix other){
@@ -120,7 +129,7 @@ public class Matrix {
 	}
 	
 	public Matrix selfmatrixMultiplication(boolean MMT) { //MMT true: Matrix.dot(Matrix.T); MMT false: Matrix.T.dot(Matrix)
-		Matrix selfT = new Matrix(this.matrixTranspose());
+		Matrix selfT = this.matrixTranspose();
 		if(MMT == true) {
 			return this.matrixMultiplication(selfT);
 		}
@@ -208,6 +217,7 @@ public class Matrix {
 		return new Matrix(newMatrix);
 		}
 	
+	
 	public static ArrayList<Number> vectorlogE(ArrayList<Number> vector) { 
 		ArrayList<Number> newVec= new ArrayList<Number>();
 		for(Number i: vector) {
@@ -215,6 +225,20 @@ public class Matrix {
 			}	
 		return newVec;
 	}
+	
+	public Matrix exp() { 
+		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
+		for(int r=0;r<this.thisMatrix.size();++r) {
+			ArrayList<Number> newRow = new ArrayList<Number>();
+			for(int c=0;c<this.thisMatrix.get(0).size();++c) {
+					newRow.add(Math.exp(this.thisMatrix.get(r).get(c).doubleValue()));
+					
+			}
+			newMatrix.add(newRow);
+		}
+		return new Matrix(newMatrix);
+		}
+	
 	
 	public Matrix multiplyMatrix(Number Coefficient) {
 		ArrayList<ArrayList<Number>> newMatrix = new ArrayList<ArrayList<Number>>();
@@ -291,9 +315,9 @@ public class Matrix {
 	
 	public static void main(String[] args) {
 		ArrayList<ArrayList<Number>> all = new ArrayList<ArrayList<Number>>();
-		Number[] a1 = {1.1,1.2,1.3,1.4};
-		Number[] a2 = {2.0,3.0,4.0,5};
-		Number[] a3 = {1,1,1,1};
+		Number[] a1 = {3,3,3,3};
+		Number[] a2 = {6,6,6,6};
+		Number[] a3 = {9,9,9,9};
 		
 		ArrayList<Number> arrA1 = new ArrayList<Number>();
 		ArrayList<Number> arrA2 = new ArrayList<Number>();
@@ -306,6 +330,9 @@ public class Matrix {
 		all.add(arrA1);
 		all.add(arrA2);
 		all.add(arrA3);
+		
+//		Matrix all = new Matrix(all);
+		System.out.println(all);
 		
 	}
 	

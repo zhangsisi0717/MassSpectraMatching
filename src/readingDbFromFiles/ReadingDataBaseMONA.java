@@ -25,6 +25,14 @@ public class ReadingDataBaseMONA {
 		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
 		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
 		mona.readFile("negative", negPath);
+		System.out.println(mona);
+		MoNACompounds cmp = mona.getCompoundList().get(100);
+		System.out.println(cmp);
+		MoNASpectrum s1 = cmp.getAllSpectra().get(0);
+		ArrayList<CompoundMatchingResults> result = s1.findMatchMonaDB(mona, 0.8);
+		for(int index=0; index<10; index++) {
+		System.out.println();
+		System.out.println(result.get(index));}
 		
 	}
 

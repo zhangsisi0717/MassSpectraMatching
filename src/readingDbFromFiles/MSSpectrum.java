@@ -7,10 +7,11 @@ import matrixOperations.Matrix;
 
 public class MSSpectrum {
 	
-	protected String mode,msLevel,precursorType;
-	protected ArrayList<Number> intensities;
-	protected ArrayList<Number> mzs;
-	protected ArrayList<ArrayList<Number>> spectrumList;
+	private String mode,msLevel,precursorType;
+	private ArrayList<Number> intensities;
+	private ArrayList<Number> mzs;
+	private ArrayList<ArrayList<Number>> spectrumList;
+	private ArrayList<Number> mzRange = new ArrayList<Number>();
 	public MSSpectrum(String mode, String msLevel, String precursorType,ArrayList<Number> intensities, ArrayList<Number> mzs,ArrayList<ArrayList<Number>> spectrumList) {
 		this.mode = mode;
 		this.msLevel = msLevel;
@@ -36,6 +37,8 @@ public class MSSpectrum {
 		else {
 			throw new java.lang.Error("mzs and intensities should not be empty!");
 		}
+		this.mzRange.add(this.mzs.get(0));
+		this.mzRange.add(this.mzs.get(this.mzs.size()-1));
 
 	}
 	
@@ -49,22 +52,33 @@ public class MSSpectrum {
 	public String getMode() {
 		return mode;
 	}
+	
+	
 	public String getMsLevel() {
 		return msLevel;
 	}
+	
+	
 	public String getPrecursorType() {
 		return precursorType;
 	}
+	
+	
 	public ArrayList<Number> getIntensities() {
 		return intensities;
 	}
+	
+	
 	public ArrayList<Number> getMzs() {
 		return mzs;
 	}
+	
+	
 	public ArrayList<ArrayList<Number>> getSpectrumList() {
 		return spectrumList;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -77,6 +91,7 @@ public class MSSpectrum {
 		result = prime * result + ((spectrumList == null) ? 0 : spectrumList.hashCode());
 		return result;
 	}
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -120,23 +135,40 @@ public class MSSpectrum {
 		return true;
 	}
 	
+	
 	public double gaussianInnerProduct(MSSpectrum other, double ppm) {
 		ArrayList<Number> mza_log = Matrix.vectorlog10(this.mzs);
 		ArrayList<Number> mzb_log = Matrix.vectorlog10(other.getMzs());
+//		System.out.println("mza_log = " + mza_log);
+//		System.out.println("mza_log.shape = " + mza_log.size());
+//		System.out.println("mzb_log = " + mzb_log);
+//		System.out.println("mzb_log.shape = " + mzb_log.size());
 		double sigma  = 2*Math.log10(1+ ppm * Math.pow(1, -6));
+//		System.out.println("sigma = " + sigma);
 		Matrix diff = Matrix.VecorSubtractOuter(mza_log, mzb_log);
-		diff = diff.divideMatrix(sigma,true).powerMatrix(2).multiplyMatrix(-1).logE();
+//		System.out.println("ab.SubtractOuter1 = " + diff.getMatrixShape());
+//		System.out.println("ab.SubtractOuter1 = " + diff);
+		diff = diff.divideMatrix(sigma,false).powerMatrix(2).multiplyMatrix(-1).exp();
+//		System.out.println("ab.SubtractOuter2 = " + diff.getMatrixShape());
+//		System.out.println("ab.SubtractOuter2 = " + diff);
 		ArrayList<ArrayList<Number>> a = new ArrayList<ArrayList<Number>>();
 		ArrayList<ArrayList<Number>> b = new ArrayList<ArrayList<Number>>();
 		a.add(this.intensities);
 		b.add(other.getIntensities());
 		Matrix inta = new Matrix(a);
 		Matrix intb = new Matrix(b);
-		Matrix result = diff.matrixMultiplication(intb);
+//		System.out.println("inta.shape = " + inta.getMatrixShape());
+//		System.out.println("inta = " + inta);
+//		System.out.println("intb.shape = " + intb.getMatrixShape());
+//		System.out.println("intb = " + intb);
+		Matrix result = diff.matrixMultiplication(intb.matrixTranspose());
+//		System.out.println("result1 = " + result);
 		result = inta.matrixMultiplication(result);
+//		System.out.println("result2 = " + result);
 		return result.getThisMatrix().get(0).get(0).doubleValue();
 		
 	}
+	
 	
 	public double cosineSimilarityScore(MSSpectrum other, double ppm) {
 		double innerProduct = gaussianInnerProduct(other, ppm);
@@ -146,5 +178,76 @@ public class MSSpectrum {
 	}
 	
 	
-
-}
+	public ArrayList<CompoundMatchingResults> findMatchMonaDB(MoNADatabase mona, double scoreThreshold){
+		ArrayList<MoNACompounds> candidates = new ArrayList<MoNACompounds>();
+		ArrayList<CompoundMatchingResults> candidatesFiltered = new ArrayList<CompoundMatchingResults>();
+		for(MoNACompounds cmp: mona.getCompoundList()) {
+			if(this.mzRange.get(1).doubleValue() >= cmp.getcmpMzRange().get(0).doubleValue() && this.mzRange.get(0).doubleValue()<=cmp.getcmpMzRange().get(1).doubleValue()){
+				{candidates.add(cmp);
+				}
+			}
+		}
+		for(int i=0; i<candidates.size(); ++i) {
+			System.out.println("Matching compounds: " + i + "/" + candidates.size());
+			CompoundMatchingResults result = findBestMatchedSpectrum(candidates.get(i));
+			if(result.getBestMatchedScore().doubleValue()>=scoreThreshold) {
+				candidatesFiltered.add(result);
+			}
+			}
+		
+		return sortMatchingResults(candidatesFiltered);
+	}
+	
+	
+	public CompoundMatchingResults findBestMatchedSpectrum(MoNACompounds cmp) {
+		double maxScore = 0.0;
+		MoNASpectrum spec = cmp.getAllSpectra().get(0);
+		for(MoNASpectrum spectrum: cmp.getAllSpectra()) {
+			double tempScore = this.cosineSimilarityScore(spectrum, 20);
+			if (maxScore < tempScore) {
+				maxScore = tempScore;
+				spec = spectrum;
+			}
+		}
+		return new CompoundMatchingResults(cmp, spec, maxScore);
+	}
+	
+	
+	public ArrayList<CompoundMatchingResults> sortMatchingResults(ArrayList<CompoundMatchingResults> allMatchedCompounds){
+		if(allMatchedCompounds.size()==1) {
+			return allMatchedCompounds;
+		}
+		ArrayList<CompoundMatchingResults> left = new ArrayList(allMatchedCompounds.subList(0, allMatchedCompounds.size()/2));
+		ArrayList<CompoundMatchingResults> right = new ArrayList(allMatchedCompounds.subList(allMatchedCompounds.size()/2,allMatchedCompounds.size()));
+		left = sortMatchingResults(left);
+		right = sortMatchingResults(right);
+		ArrayList<CompoundMatchingResults> newResult = new ArrayList<CompoundMatchingResults>();
+		int i=0;
+		int j=0;
+		while(i<left.size() || j<right.size()) {
+//			System.out.println("i=" +i);
+//			System.out.println("j=" +j);
+			if(i>= left.size()) {
+				ArrayList<CompoundMatchingResults> newList = new ArrayList(right.subList(j, right.size()));
+				newResult.addAll(newList);
+				break;
+			}
+			if(j>= right.size()) {
+				ArrayList<CompoundMatchingResults> newList2 = new ArrayList(left.subList(i, left.size()));
+				newResult.addAll(newList2);
+				break;
+			}
+			if(left.get(i).getBestMatchedScore().doubleValue()>right.get(j).getBestMatchedScore().doubleValue()) {
+				newResult.add(left.get(i));
+				i +=1;
+			}
+			else {
+				newResult.add(right.get(j));
+				j+=1;
+			}
+			
+		}
+		return newResult;
+	}
+		
+	}
