@@ -19,29 +19,7 @@ import matrixOperations.Matrix;
 
 public class ReadingDataBaseMONA {
 
-	public static void main(String[] args) throws IOException, ParseException {
-		
-//		String negPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
-//		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
-//		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
-//		mona.readFile("negative", negPath);
-//		System.out.println("\n\n"+ mona);
-//
-//		Number[] mz = {199.0000,241.0100,259.0210};
-//		Number[] ints = {0.1032,0.003643933,1.0};
-//		ArrayList<Number> mz2 = new ArrayList<Number>();
-//		ArrayList<Number> ints2 = new ArrayList<Number>();
-//		Collections.addAll(mz2, mz);
-//		Collections.addAll(ints2, ints);
-//		MSSpectrum s = new MSSpectrum("negative", "", "",ints2,mz2,new ArrayList<ArrayList<Number>>());	
-//		ArrayList<CompoundMatchingResults> result = s.findMatchMonaDB(mona, 0.01);
-//		
-//	
-//		for(int index=0; index<10; index++) { ////print out the top 10 best match
-//		System.out.println("\n");
-//		System.out.println(result.get(index));}
-		
-	}
+
 
 	public static JSONObject readingJSONMoNA(String path) throws IOException, ParseException{
 		JSONParser jsonParser = new JSONParser();

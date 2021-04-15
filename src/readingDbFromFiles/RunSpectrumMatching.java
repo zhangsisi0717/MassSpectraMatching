@@ -36,15 +36,13 @@ public class RunSpectrumMatching {
 		 * 			2. threshold matching score, the larger the better match (0.0-1.0), 
 		 * 			results larger than the score will be included into the final results
 		 */
-		ArrayList<CompoundMatchingResults> result = s.findMatchMonaDB(mona, 0.5);
+		ArrayList<CompoundMatchingResults> result = s.findMatchMonaDB(mona, 0.3);
 		
-	
-		for(int index=0; index<20; index++) { //print out the top 20 best match
+		
+		for(int index=0; index<Math.max(result.size(), 10); index++) { //print out the top 10 best match
 		System.out.println("\n");
 		System.out.println(result.get(index));}
 		
-
-
 	}
 
 }
