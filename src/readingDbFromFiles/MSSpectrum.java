@@ -1,6 +1,7 @@
 package readingDbFromFiles;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import matrixOperations.Matrix;
 
@@ -10,6 +11,7 @@ public class MSSpectrum {
 	private String mode,msLevel,precursorType;
 	private ArrayList<Number> intensities;
 	private ArrayList<Number> mzs;
+	private ArrayList<Number> abs_intensities;
 	private ArrayList<ArrayList<Number>> spectrumList;
 	private ArrayList<Number> mzRange = new ArrayList<Number>();
 	public MSSpectrum(String mode, String msLevel, String precursorType,ArrayList<Number> intensities, ArrayList<Number> mzs,ArrayList<ArrayList<Number>> spectrumList) {
@@ -41,6 +43,7 @@ public class MSSpectrum {
 		this.mzRange.add(this.mzs.get(this.mzs.size()-1));
 
 	}
+	
 	
 	
 	@Override
@@ -137,9 +140,9 @@ public class MSSpectrum {
 	
 	
 	public double gaussianInnerProduct(MSSpectrum other, double ppm) {
-		ArrayList<Number> mza_log = Matrix.vectorlog10(this.mzs);
-		ArrayList<Number> mzb_log = Matrix.vectorlog10(other.getMzs());
-		double sigma  = 2*Math.log10(1+ ppm * Math.pow(1, -6));
+		ArrayList<Number> mza_log = Matrix.vectorlogE(this.mzs);
+		ArrayList<Number> mzb_log = Matrix.vectorlogE(other.getMzs());
+		double sigma  = 2 * Math.log(1+ ppm * Math.pow(10, -6));
 		Matrix diff = Matrix.VecorSubtractOuter(mza_log, mzb_log);
 		diff = diff.divideMatrix(sigma,false).powerMatrix(2).multiplyMatrix(-1).exp();
 		ArrayList<ArrayList<Number>> a = new ArrayList<ArrayList<Number>>();
@@ -173,13 +176,15 @@ public class MSSpectrum {
 			}
 		}
 		for(int i=0; i<candidates.size(); ++i) {
-			System.out.print("\r"+"Matching compounds: " + i+1 + "/" + candidates.size()+"           ");
+			System.out.print("\r"+"Matching compounds: " + (i+1) + "/" + candidates.size() +"      ");
 			CompoundMatchingResults result = findBestMatchedSpectrum(candidates.get(i));
 			if(result.getBestMatchedScore().doubleValue()>=scoreThreshold) {
 				candidatesFiltered.add(result);
 			}
 			}
-		
+		if(candidatesFiltered.isEmpty()) {
+			return candidatesFiltered;
+		}
 		return sortMatchingResults(candidatesFiltered);
 	}
 	

@@ -21,19 +21,25 @@ public class ReadingDataBaseMONA {
 
 	public static void main(String[] args) throws IOException, ParseException {
 		
-		String negPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
-		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
-		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
-		mona.readFile("negative", negPath);
-//		System.out.println();
-		System.out.println("\n\n"+ mona);
-		MoNACompounds cmp = mona.getCompoundList().get(100);
-//		System.out.println("\n\n"+ cmp);
-		MoNASpectrum s1 = cmp.getAllSpectra().get(0);
-		ArrayList<CompoundMatchingResults> result = s1.findMatchMonaDB(mona, 0.8);
-		for(int index=0; index<10; index++) {
-		System.out.println("\n");
-		System.out.println(result.get(index));}
+//		String negPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Negative_Mode.json";
+//		String posPath = "/Users/sisizhang/Dropbox/Share_Yuchen/Projects/JAVA_MassSpectraMatching/MoNA-export-LC-MS-MS_Positive_Mode.json";
+//		MoNADatabase mona = new MoNADatabase("MoNA", negPath, posPath);
+//		mona.readFile("negative", negPath);
+//		System.out.println("\n\n"+ mona);
+//
+//		Number[] mz = {199.0000,241.0100,259.0210};
+//		Number[] ints = {0.1032,0.003643933,1.0};
+//		ArrayList<Number> mz2 = new ArrayList<Number>();
+//		ArrayList<Number> ints2 = new ArrayList<Number>();
+//		Collections.addAll(mz2, mz);
+//		Collections.addAll(ints2, ints);
+//		MSSpectrum s = new MSSpectrum("negative", "", "",ints2,mz2,new ArrayList<ArrayList<Number>>());	
+//		ArrayList<CompoundMatchingResults> result = s.findMatchMonaDB(mona, 0.01);
+//		
+//	
+//		for(int index=0; index<10; index++) { ////print out the top 10 best match
+//		System.out.println("\n");
+//		System.out.println(result.get(index));}
 		
 	}
 
@@ -42,9 +48,9 @@ public class ReadingDataBaseMONA {
 
 		FileReader reader = new FileReader(path);
 
-		Object obj = jsonParser.parse(reader); //jsonParser returned a JAVAObject
+		Object obj = jsonParser.parse(reader); 
 
-		JSONArray specArrays = (JSONArray)obj; //cast java object to JSONArray     {}:JSONObject  []:JSONArray
+		JSONArray specArrays = (JSONArray)obj; 
 
 		JSONObject allSpectraInfo = new JSONObject();
 		for(int idx=0; idx<specArrays.size();++idx) {
@@ -54,27 +60,27 @@ public class ReadingDataBaseMONA {
 			}
 			JSONObject singleSpectraInfo = new JSONObject();
 
-			JSONObject specInfo = (JSONObject)specArrays.get(idx);  //specInfo = mona[idx]
+			JSONObject specInfo = (JSONObject)specArrays.get(idx);  
 
-			String specID = (String) specInfo.get("id");        // specID = mona[idx].get("id")
-			singleSpectraInfo.put("SpectrumID",specID);			//add specID
+			String specID = (String) specInfo.get("id");       
+			singleSpectraInfo.put("SpectrumID",specID);			
 
-			String specString = (String) specInfo.get("spectrum"); //spectrum can be null  specString = mona[idx].get("spectrum")
+			String specString = (String) specInfo.get("spectrum"); 
 
 			if(specString == null) {
 				continue;
 			}
 		
-			JSONArray metaData1 = (JSONArray) specInfo.get("metaData"); //metaData1 = mona[idx].get("metaData")  (Array)
-			JSONArray comInfoArray = (JSONArray)specInfo.get("compound");  //comInfoArray = mona[idx].get('compound') (Array)
+			JSONArray metaData1 = (JSONArray) specInfo.get("metaData"); 
+			JSONArray comInfoArray = (JSONArray)specInfo.get("compound"); 
 
-			JSONObject comInfoObj = (JSONObject)comInfoArray.get(0);  //comInfoObj = mona[idx].get('compound')[0]
-			String inchikey = (String)comInfoObj.get("inchiKey");  //inchikey = mona_raw[idx]['compound'][0].get('inchiKey')
+			JSONObject comInfoObj = (JSONObject)comInfoArray.get(0);  
+			String inchikey = (String)comInfoObj.get("inchiKey");  
 			if(inchikey==null) {
 				continue;
 			}
-			singleSpectraInfo.put("inchikey",inchikey); //add inchikey
-			JSONArray nameArray = (JSONArray) comInfoObj.get("names"); //nameArray = mona_raw[idx]['compound'][0].get('names')
+			singleSpectraInfo.put("inchikey",inchikey); 
+			JSONArray nameArray = (JSONArray) comInfoObj.get("names"); 
 			if (nameArray.isEmpty()) {
 				singleSpectraInfo.put("name","null");
 
@@ -89,7 +95,7 @@ public class ReadingDataBaseMONA {
 			List<Number> specMz = new ArrayList<Number>();
 			List<Number> specInts = new ArrayList<Number>();
 
-			for(int jd=tempIndex+1; jd<specString.length();++jd) {        //parse the spectra string and convert into double
+			for(int jd=tempIndex+1; jd<specString.length();++jd) {       
 				if(specString.charAt(jd) == ':') {
 					Double mz = Double.parseDouble(specString.substring(tempIndex, jd));
 			
@@ -113,14 +119,14 @@ public class ReadingDataBaseMONA {
 			singleSpectraInfo.put("intensities", specInts);
 
 	
-			JSONArray metaData2 = (JSONArray)comInfoObj.get("metaData"); //metaData2 = mona_raw[idx]['compound'].get(0).get('metaData')
+			JSONArray metaData2 = (JSONArray)comInfoObj.get("metaData"); 
 
-			for(int j=0;j<metaData2.size();++j) { //iterate in metaData2
+			for(int j=0;j<metaData2.size();++j) { 
 				JSONObject temp = (JSONObject) metaData2.get(j);
 				String name = (String) temp.get("name");
 				if(name.equals("molecular formula")) {
 					String formula = (String) temp.get("value");
-					singleSpectraInfo.put("molecularFormula",formula); //add to JSONObject
+					singleSpectraInfo.put("molecularFormula",formula); 
 				
 				}
 				else if(name.equals("total exact mass")) {
@@ -132,7 +138,7 @@ public class ReadingDataBaseMONA {
 
 			}
 			if(singleSpectraInfo.get("molecularFormula") ==null) {
-				singleSpectraInfo.put("molecularFormula", "null");///to confirm if those fields are null!
+				singleSpectraInfo.put("molecularFormula", "null");
 			}
 			if(singleSpectraInfo.get("totalExactMass")==null) {
 				singleSpectraInfo.put("totalExactMass", 0.0);
